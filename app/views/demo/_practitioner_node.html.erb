@@ -1,0 +1,9 @@
+<% @already_listed_practitioners << practitioner %>
+<li>
+  <a href="#"><%= practitioner.name %></a>
+  <% if practitioner.disciples.present? %>
+    <ul>
+      <%= render partial: "practitioner_node", collection: practitioner.disciples_excluding(@already_listed_practitioners), as: :practitioner %>
+    </ul>
+  <% end %>
+</li>
