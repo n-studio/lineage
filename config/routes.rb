@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   get "demo", to: "demo#index"
+  get "static_demo", to: "demo#static_index"
 end

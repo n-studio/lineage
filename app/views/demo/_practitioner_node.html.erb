@@ -1,9 +1,13 @@
-<% @already_listed_practitioners << practitioner %>
-<li>
-  <a href="#"><%= practitioner.name %></a>
-  <% if practitioner.disciples.present? %>
-    <ul>
-      <%= render partial: "practitioner_node", collection: practitioner.disciples_excluding(@already_listed_practitioners), as: :practitioner %>
+<li class="<%= @tree.li_class(tree_node) %>">
+  <span><a href="#"><%= tree_node[:name] %></a></span>
+  <% if tree_node[:children].present? %>
+    <ul class="<%= @tree.li_ul_class(tree_node) %>" style="--width: calc(<%= @tree.left_ul_size(tree_node) + 1 %> * 110px / 2);">
+      <%= render partial: "practitioner_node", collection: tree_node[:children], as: :tree_node %>
     </ul>
+  <% elsif tree_node[:loop] %>
+    <ul class="loop"></ul>
   <% end %>
+  <!--
+  <%= raw tree_node.as_json(except: [:children]) %>
+  -->
 </li>
