@@ -58,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   width: calc(100%);
 }
 .tree li.skip-level-2 ul.loop:after {
-  height: calc(34px * 3);
+  height: calc(34px * 3 + 1px);
   width: calc(100% + 50% * 2); /* incorrect */
   border-bottom: 1px solid #ccc;
 }
@@ -132,9 +132,9 @@ right connector from last child*/
 }
 .tree li.skip span::before {
   content: '';
-  height: 30px;
+  height: 36px;
   width: 0px;
-  position: absolute; top: 20px; left: calc(50% - 1px);
+  position: absolute; top: 12px; left: calc(50% - 1px);
   border-left: 1px solid #ccc;
 }
 
