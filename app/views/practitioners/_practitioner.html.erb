@@ -1,0 +1,8 @@
+<div>
+  <%= link_to practitioner do %>
+    <div id="<%= dom_id practitioner %>" class="">
+      <span class="font-bold"><%= practitioner.name %></span>
+      (<%= practitioner.styles.map(&:name).join("/") %>)
+    </div>
+  <% end %>
+</div>

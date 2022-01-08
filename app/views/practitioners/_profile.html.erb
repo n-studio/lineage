@@ -1,0 +1,62 @@
+<% if practitioner %>
+  <%= turbo_frame_tag "practitioner_info", class: "w-6/12 lg:w-5/12 xl:w-3/12" do %>
+    <aside class="mr-8 p-2 border rounded h-[calc(100vh-5rem-4rem)]">
+      <h1 class="text-center font-bold">
+        <%= practitioner.name %>
+        <%= emoji_flag practitioner.country_code %>
+      </h1>
+      <div class="text-xs text-center">
+        (<%= link_to "open lineage", practitioner_path(practitioner, style: @style, mode: "leaves"), target: "_top", class: "hover:underline" %>
+        &middot;
+        <%= link_to "list students", practitioner_path(practitioner, style: @style, mode: "root"), target: "_top", class: "hover:underline" %>)
+      </div>
+
+      <h2 class="font-bold text-sm mt-4">Masters</h2>
+      <ul class="list-disc list-inside text-sm">
+        <% practitioner.styles_taught.each do |style| %>
+          <% practitioner.masters_for(style: style).each do |master| %>
+            <li>
+              <%= link_to practitioner_path(master), class: "hover:underline" do %>
+                <%= master.name %>
+                <%= emoji_flag master.country_code %>
+                (<%= style.name %>)
+              <% end %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+
+      <h2 class="font-bold text-sm mt-4">Disciples</h2>
+      <ul class="list-disc list-inside text-sm">
+        <% practitioner.styles_taught.each do |style| %>
+          <% practitioner.disciples_for(style: style).each do |disciple| %>
+            <li>
+              <%= link_to practitioner_path(disciple), class: "hover:underline" do %>
+                <%= disciple.name %>
+                <%= emoji_flag disciple.country_code %>
+                (<%= style.name %>)
+              <% end %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+
+      <div class="flex mt-4 justify-center text-sm">
+        <%= link_to "Add Master", new_practitioner_master_path(practitioner_id: practitioner.id), class: "hover:underline", data: { turbo: current_user.present? } %>
+        <div class="mx-2">&middot;</div>
+        <%= link_to "Add Disciple", new_practitioner_disciple_path(practitioner_id: practitioner.id), class: "hover:underline", data: { turbo: current_user.present? } %>
+      </div>
+
+      <% if can?(:edit, practitioner) && can?(:delete, practitioner) %>
+        <div class="flex mt-4 justify-center text-sm">
+          <%= link_to "Edit", edit_practitioner_path(practitioner), class: "hover:underline", data: { turbo: current_user.present? } %>
+          <div class="mx-2">&middot;</div>
+          <%= button_to "Delete", practitioner, method: :delete, class: "hover:underline", data: { confirm: "Are you sure?", turbo: false } %>
+        </div>
+      <% end %>
+    </aside>
+  <% end %>
+<% else %>
+  <%= turbo_frame_tag "practitioner_info", class: "hidden" do %>
+  <% end %>
+<% end %>

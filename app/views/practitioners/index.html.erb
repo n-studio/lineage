@@ -1,0 +1,11 @@
+<main class="container mx-auto">
+  <p style="color: green"><%= notice %></p>
+
+  <h1 class="text-center font-semibold text-4xl">Latest added practitioners</h1>
+
+  <div id="practitioners">
+    <%= render partial: "practitioner", collection: @practitioners %>
+  </div>
+
+  <%== pagy_nav(@pagy) %>
+</main>

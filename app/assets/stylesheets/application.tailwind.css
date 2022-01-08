@@ -3,3 +3,14 @@
 @import "tailwindcss/utilities";
 
 @import "tree.css";
+@import "pagy.css";
+
+:not(.selectize-input) {
+  &>input[type=text], &>input[type=email], &>input[type=password], &>select, .selectize-input {
+    @apply border border-gray-200 shadow-none rounded px-2 h-9;
+  }
+
+  &>input[type=submit] {
+    @apply border;
+  }
+}

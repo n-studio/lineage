@@ -1,0 +1,25 @@
+<main class="container mx-auto">
+  <h2 class="text-5xl">Edit Profile</h2>
+
+  <%= link_to "Sign out", destroy_user_session_path, method: :delete, data: { turbo: false }, class: "", role: "menuitem" %>
+
+  <%= form_for(@user, url: user_path(@user), html: { method: :patch }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: @user %>
+
+    <div class="field">
+      <%= f.label :display_name %><br />
+      <%= f.text_field :display_name, class: "w-full h-10 px-3 mb-2 text-base text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline" %>
+    </div>
+
+    <div class="field">
+      <%= image_tag @user.profile_image.variant(resize_to_fill: [200, 200]), class: "rounded-full" if @user.profile_image.attached? %>
+
+      <%= f.label :profile_image %><br />
+      <%= f.file_field :profile_image, class: "w-full h-10 px-3 mb-2 text-base text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Update", class: "h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" %>
+    </div>
+  <% end %>
+</main>

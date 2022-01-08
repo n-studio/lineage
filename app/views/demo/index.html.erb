@@ -1,7 +1,10 @@
-<div class="w-screen h-screen overflow-scroll">
-  <div class="tree <%= "flipped" if @tree.flipped? %>">
-    <ul>
-      <%= render partial: "practitioner_node", locals: { tree_node: @tree.json.first } %>
-    </ul>
-  </div>
+<div class="flex">
+  <main class="w-screen h-screen overflow-scroll">
+    <div class="tree <%= "flipped" if @tree.flipped? %>">
+      <ul>
+        <%= render partial: "practitioners/practitioner_node", locals: { tree_node: @tree.json.first } %>
+      </ul>
+    </div>
+  </main>
+  <%= render partial: "practitioners/profile", locals: { practitioner: @practitioner } %>
 </div>

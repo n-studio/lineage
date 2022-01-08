@@ -1,0 +1,13 @@
+<main class="container mx-auto">
+  <%= turbo_frame_tag "practitioner_info", class: "w-6/12 lg:w-5/12 xl:w-3/12" do %>
+    <aside class="mr-8 p-2 border rounded h-[calc(100vh-5rem-4rem)]">
+      <h1>Editing practitioner</h1>
+
+      <%= render "form", practitioner: @practitioner %>
+
+      <br>
+
+      <%= link_to "Back", :back %>
+    </aside>
+  <% end %>
+</main>

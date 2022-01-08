@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+  devise_for :users
+  root to: "practitioners#index"
+  get "/practitioners/search/:search", to: "practitioners#index"
+  get "/styles/search/:search", to: "styles#index"
+  resources :practitioners do
+    resources :masters, only: %i[new create]
+    resources :disciples, only: %i[new create]
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
-
-  get "demo", to: "demo#index"
-  get "static_demo", to: "demo#static_index"
 end

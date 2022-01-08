@@ -1,0 +1,42 @@
+<%= form_with(model: practitioner, data: { turbo: practitioner.new_record? ? "false" : "true" }) do |form| %>
+  <% if practitioner.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(practitioner.errors.count, "error") %> prohibited this practitioner from being saved:</h2>
+
+      <ul>
+        <% practitioner.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.check_box :me %>
+    <%= form.label :me, "This practitioner is me", style: "display: inline" %>
+  </div>
+
+  <div>
+    <%= form.label :created_style, "Founder of", style: "display: block" %>
+    <%= form.select :created_style, [practitioner.created_style&.name], {}, data: { select_style: true } %>
+  </div>
+
+  <div>
+    <%= form.label :country_code, "Country", style: "display: block" %>
+    <%= form.country_select :country_code, { include_blank: true }, { class: "w-full" } %>
+  </div>
+
+  <div>
+    <%= form.label :public_figure, style: "display: block" %>
+    <%= form.select :public_figure, [["Yes", true], ["No", false]], { class: "w-full" } %>
+  </div>
+
+  <div>
+    <%= form.submit practitioner.new_record? ? "Add Practitioner" : "Update Practitioner", class: "rounded bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 mt-4" %>
+  </div>
+<% end %>

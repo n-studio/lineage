@@ -1,0 +1,23 @@
+<div class="flex">
+  <main class="w-screen h-screen overflow-scroll">
+    <header class="text-center">
+      <h2><%= practitioner.name %>'s lineage</h2>
+      <% practitioner.styles.each_with_index do |style, index| %>
+        <% if index > 0 %>
+          <span>&middot;</span>
+        <% end %>
+        <% if style == @style %>
+          <h1 class="inline font-bold"><%= style.name %></h1>
+        <% else %>
+          <%= link_to style.name, { style: style.name, mode: @mode }, class: "hover:underline" %>
+        <% end %>
+      <% end %>
+    </header>
+    <div class="tree <%= "flipped" if tree.flipped? %>">
+      <ul>
+        <%= render partial: "practitioner_node", locals: { tree_node: tree.json.first } %>
+      </ul>
+    </div>
+  </main>
+  <%= render partial: "profile", locals: { practitioner: practitioner } %>
+</div>

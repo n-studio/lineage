@@ -1,0 +1,21 @@
+<nav class="border-b mb-8">
+  <div class="h-20 flex container mx-auto justify-between">
+    <section class="flex items-center gap-x-4">
+      <h1>
+        <%= link_to root_path do %>
+          <span class="font-bold text-2xl">Lineage</span> <span class="text-xs">by Solfanto</span>
+        <% end %>
+      </h1>
+    </section>
+    <section>
+    </section>
+    <section class="flex items-center gap-x-4">
+      <%= link_to "Add practitioner", new_practitioner_path, class: "font-bold hover:underline" %>
+      <% if current_user %>
+        <%= link_to "My profile", edit_user_registration_path(current_user), class: "rounded bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2" %>
+      <% else %>
+        <%= link_to "Log in", new_session_path(:user), class: "rounded bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2" %>
+      <% end %>
+    </section>
+  </div>
+</nav>

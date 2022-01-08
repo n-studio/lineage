@@ -6,11 +6,16 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.css" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <%= render partial: "navbar" %>
+    <div class="container mx-auto"><%= render partial: "alert" %></div>
     <%= yield %>
+
+    <%= render partial: "after_stream_render" %>
   </body>
 </html>
