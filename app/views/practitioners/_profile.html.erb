@@ -13,7 +13,7 @@
 
       <h2 class="font-bold text-sm mt-4">Masters</h2>
       <ul class="list-disc list-inside text-sm">
-        <% practitioner.styles_taught.each do |style| %>
+        <% practitioner.styles_learned.each do |style| %>
           <% practitioner.masters_for(style: style).each do |master| %>
             <li>
               <%= link_to practitioner_path(master), class: "hover:underline" do %>
