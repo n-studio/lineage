@@ -1,13 +1,14 @@
 <nav class="border-b mb-8">
-  <div class="h-20 flex container mx-auto justify-between">
-    <section class="flex items-center gap-x-4">
+  <div class="h-20 flex container mx-auto justify-between gap-x-6">
+    <section class="flex items-center gap-x-4 grow">
       <h1>
         <%= link_to root_path do %>
           <span class="font-bold text-2xl">Lineage</span> <span class="text-xs">by Solfanto</span>
         <% end %>
       </h1>
     </section>
-    <section>
+    <section class="flex items-center">
+      <%= render partial: "search_bar" %>
     </section>
     <section class="flex items-center gap-x-4">
       <%= link_to "Add practitioner", new_practitioner_path, class: "font-bold hover:underline" %>

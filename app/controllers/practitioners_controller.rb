@@ -62,10 +62,21 @@ class PractitionersController < ApplicationController
   def update
     render_unauthorized and return unless can? :edit, @practitioner
 
-    created_style = Style.find_or_create_by(name: practitioner_params.delete(:created_style))
+    created_style_id_or_name = practitioner_params.delete(:created_style)
+    created_style =
+      if created_style_id_or_name.blank?
+        nil
+      elsif created_style_id_or_name.to_i > 0
+        Style.find(created_style_id_or_name)
+      else
+        Style.find_or_create_by(name: created_style_id_or_name)
+      end
+
+    @practitioner.user = current_user if params[:practitioner][:me] == "true" && current_user.practitioner.blank?
+    @practitioner.assign_attributes(practitioner_params.merge(created_style: created_style))
 
     respond_to do |format|
-      if @practitioner.update(practitioner_params.merge(created_style: created_style))
+      if @practitioner.save
         format.html { redirect_to practitioner_url(@practitioner), notice: "Practitioner was successfully updated." }
         format.json { render :show, status: :ok, location: @practitioner }
       else

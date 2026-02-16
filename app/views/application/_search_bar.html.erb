@@ -1,0 +1,6 @@
+<%= form_with url: practitioners_search_path, method: :get, local: true, class: "relative" do %>
+  <input class="border border-gray-300 bg-white h-9 px-3 pr-8 rounded-lg text-md sm:text-sm focus:outline-none w-full" type="search" name="search" placeholder="Search..." value="<%= params[:search] %>">
+  <button type="submit" class="absolute right-0 top-0 mt-2 mr-2.5">
+    <%= heroicon "search", options: { class: "text-gray-600 h-5 w-5" } %>
+  </button>
+<% end %>

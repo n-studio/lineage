@@ -15,6 +15,8 @@
 class Style < ApplicationRecord
   has_many :relationships, dependent: :restrict_with_exception
 
+  validates :name, presence: true, uniqueness: true
+
   def self.where_name_is_like(name, max_distance: 2)
     where(
       "LOWER(name) LIKE :like OR levenshtein(LOWER(name), :name) <= :max_distance",
