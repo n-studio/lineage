@@ -1,9 +1,10 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
 
-@import "tree.css";
-@import "pagy.css";
+@source "../../views";
+@source "../../helpers";
+@source "../../javascript";
+
+@import "./pagy.css";
 
 :not(.selectize-input) {
   &>input[type=text], &>input[type=email], &>input[type=password], &>select, .selectize-input {

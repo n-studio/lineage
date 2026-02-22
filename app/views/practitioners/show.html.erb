@@ -1,5 +1,5 @@
 <p style="color: green"><%= notice %></p>
 
 <%= turbo_frame_tag :lineage do %>
-  <%= render partial: "lineage", locals: { practitioner: @practitioner, tree: @tree } %>
+  <%= render partial: "lineage", locals: { practitioner: @practitioner } %>
 <% end %>

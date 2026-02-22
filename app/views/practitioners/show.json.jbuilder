@@ -1,4 +1,4 @@
 json.data do
   json.partial! "practitioners/practitioner", practitioner: @practitioner
-  json.tree @tree.json
+  json.graph @graph_data
 end

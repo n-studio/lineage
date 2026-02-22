@@ -126,6 +126,6 @@ class PractitionersController < ApplicationController
         @practitioner.created_style || @practitioner.styles.first
       end
     end
-    @tree =Lineage::TreeBuilder.new(practitioners: [@practitioner], style: @style, mode: @mode).call
+    @graph_data = Lineage::GraphBuilder.new(practitioner: @practitioner, style: @style, mode: @mode).call
   end
 end
