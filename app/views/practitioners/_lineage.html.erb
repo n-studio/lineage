@@ -1,5 +1,8 @@
 <div class="flex">
-  <main class="w-screen h-screen overflow-scroll">
+  <main class="relative w-screen max-h-[calc(100vh-7rem)] overflow-hidden"
+        data-controller="lineage-graph"
+        data-lineage-graph-graph-value="<%= @graph_data.to_json %>"
+        data-lineage-graph-practitioner-path-template-value="<%= practitioner_path(':id') %>">
     <header class="text-center">
       <h2><%= practitioner.name %>'s lineage</h2>
       <% practitioner.styles.each_with_index do |style, index| %>
@@ -13,10 +16,16 @@
         <% end %>
       <% end %>
     </header>
-    <div class="tree <%= "flipped" if tree.flipped? %>">
-      <ul>
-        <%= render partial: "practitioner_node", locals: { tree_node: tree.json.first } %>
-      </ul>
+    <div id="lineage-graph" class="h-full" data-lineage-graph-target="canvas"></div>
+    <button type="button"
+            class="absolute bottom-8 right-8 z-50 rounded bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 text-xs shadow"
+            data-action="lineage-graph#resetZoom">
+      Reset zoom
+    </button>
+    <div id="lineage-graph-nodes" style="display:none;">
+      <% @graph_data[:nodes].each do |node| %>
+        <%= link_to node[:name], practitioner_path(node[:id]) %>
+      <% end %>
     </div>
   </main>
   <%= render partial: "profile", locals: { practitioner: practitioner } %>

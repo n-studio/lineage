@@ -10,6 +10,11 @@ RSpec.describe "Lineage tree", type: :system do
 
   before { sign_in user }
 
+  def graph_node_names
+    json = find("[data-controller='lineage-graph']")["data-lineage-graph-graph-value"]
+    JSON.parse(json)["nodes"].map { |n| n["name"] }
+  end
+
   describe "creating a lineage tree" do
     it "creates a practitioner and views empty lineage" do
       visit new_practitioner_path
@@ -31,8 +36,7 @@ RSpec.describe "Lineage tree", type: :system do
 
       expect(page).to have_content("Yip Man's lineage")
       expect(page).to have_content("Wing Chun")
-      expect(page).to have_link("Chan Wah Shun")
-      expect(page).to have_link("Yip Man")
+      expect(graph_node_names).to include("Chan Wah Shun", "Yip Man")
     end
 
     it "displays a multi-generation lineage tree from root" do
@@ -46,9 +50,7 @@ RSpec.describe "Lineage tree", type: :system do
       visit practitioner_path(grandmaster, style: style.name, mode: "root")
 
       expect(page).to have_content("Leung Jan's lineage")
-      expect(page).to have_link("Leung Jan")
-      expect(page).to have_link("Chan Wah Shun")
-      expect(page).to have_link("Yip Man")
+      expect(graph_node_names).to include("Leung Jan", "Chan Wah Shun", "Yip Man")
     end
 
     it "displays a lineage tree with multiple masters" do
@@ -62,8 +64,7 @@ RSpec.describe "Lineage tree", type: :system do
       visit practitioner_path(disciple, style: style.name, mode: "leaves")
 
       expect(page).to have_content("Yip Man's lineage")
-      expect(page).to have_link("Chan Wah Shun")
-      expect(page).to have_link("Leung Bik")
+      expect(graph_node_names).to include("Chan Wah Shun", "Leung Bik")
     end
 
     it "navigates from practitioner index to show page" do
@@ -139,20 +140,15 @@ RSpec.describe "Lineage tree", type: :system do
       visit practitioner_path(ng_mui, style: style.name, mode: "root")
 
       expect(page).to have_content("Ng Mui's lineage")
-      expect(page).to have_link("Ng Mui")
-      expect(page).to have_link("Yim Wing Chun")
-      expect(page).to have_link("Leung Bok Cho")
-      expect(page).to have_link("Leung Lan Kwai")
-      expect(page).to have_link("Wong Wah Po")
-      expect(page).to have_link("Leung Yee Tai")
-      expect(page).to have_link("Leung Jan")
-      expect(page).to have_link("Chan Wah Shun")
-      expect(page).to have_link("Leung Bik")
-      expect(page).to have_link("Yip Man")
-      expect(page).to have_link("Chu Shong Tin")
+      names = graph_node_names
+      expect(names).to include(
+        "Ng Mui", "Yim Wing Chun", "Leung Bok Cho", "Leung Lan Kwai",
+        "Wong Wah Po", "Leung Yee Tai", "Leung Jan", "Chan Wah Shun",
+        "Leung Bik", "Yip Man", "Chu Shong Tin"
+      )
 
-      # Verify the tree is rendered with the correct CSS class
-      expect(page).to have_css("div.tree")
+      # Verify the graph container is rendered
+      expect(page).to have_css("div#lineage-graph")
     end
   end
 
@@ -167,12 +163,14 @@ RSpec.describe "Lineage tree", type: :system do
     it "switches between root and leaves mode" do
       visit practitioner_path(disciple, style: style.name, mode: "root")
       expect(page).to have_content("Yip Man's lineage")
-      expect(page).not_to have_css("div.tree.flipped")
+      graph_data = JSON.parse(find("[data-controller='lineage-graph']")["data-lineage-graph-graph-value"])
+      expect(graph_data["flipped"]).to be false
 
       visit practitioner_path(disciple, style: style.name, mode: "leaves")
       expect(page).to have_content("Yip Man's lineage")
-      expect(page).to have_css("div.tree.flipped")
-      expect(page).to have_link("Chan Wah Shun")
+      graph_data = JSON.parse(find("[data-controller='lineage-graph']")["data-lineage-graph-graph-value"])
+      expect(graph_data["flipped"]).to be true
+      expect(graph_node_names).to include("Chan Wah Shun")
     end
   end
 
