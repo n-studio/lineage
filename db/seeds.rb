@@ -1,54 +1,57 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
 
-user = User.create(email: "user@example.com", password: "aaaaaaaa", admin: true)
-style = Style.create(name: "Wing Chun")
-pole_style = Style.create(name: "Six and a half point long pole")
-ng_mui = Practitioner.create(name: "Ng Mui", legendary: true, controversial: true, created_style: style, added_by: user, public_figure: true)
-chi_sin = Practitioner.create(name: "Chi Sin", legendary: true, controversial: true, created_style: style, added_by: user, public_figure: true)
-yim_wing_chun = Practitioner.create(name: "Yim Wing Chun", controversial: true, added_by: user, public_figure: true)
-yim_wing_chun.disciple_of!(ng_mui, style: style)
-leung_bok_cho = Practitioner.create(name: "Leung Bok Cho", added_by: user, public_figure: true)
-leung_bok_cho.disciple_of!(yim_wing_chun, style: style)
-leung_lan_kwai = Practitioner.create(name: "Leung Lan Kwai", added_by: user, public_figure: true)
-leung_lan_kwai.disciple_of!(leung_bok_cho, style: style)
-leung_yee_tai = Practitioner.create(name: "Leung Yee Tai", added_by: user, public_figure: true)
-leung_yee_tai.disciple_of!(chi_sin, style: pole_style)
-wong_wah_po = Practitioner.create(name: "Wong Wah Po", added_by: user, public_figure: true)
-leung_yee_tai.disciple_of!(wong_wah_po, style: style)
-wong_wah_po.disciple_of!(leung_yee_tai, style: pole_style)
-wong_wah_po.disciple_of!(leung_lan_kwai, style: style)
-leung_jan = Practitioner.create(name: "Leung Jan", added_by: user, public_figure: true)
-leung_jan.disciple_of!(leung_yee_tai, style: style)
-leung_jan.disciple_of!(wong_wah_po, style: style)
-chan_wah_shun = Practitioner.create(name: "Chan Wah Shun", added_by: user, public_figure: true)
-chan_wah_shun.disciple_of!(leung_jan, style: style)
-leung_bik = Practitioner.create(name: "Leung Bik", added_by: user, public_figure: true)
-leung_bik.disciple_of!(leung_jan, style: style)
-leung_bik.disciple_of!(wong_wah_po, style: style)
-yip_man = Practitioner.create(name: "Yip Man", added_by: user, public_figure: true)
-yip_man.disciple_of!(chan_wah_shun, style: style)
-yip_man.disciple_of!(leung_bik, style: style)
-yip_chun = Practitioner.create(name: "Yip Chun", added_by: user, public_figure: true)
-yip_chun.disciple_of!(yip_man, style: style)
-yip_ching = Practitioner.create(name: "Yip Ching", added_by: user, public_figure: true)
-yip_ching.disciple_of!(yip_man, style: style)
-leung_sheung = Practitioner.create(name: "Leung Sheung", added_by: user, public_figure: true)
-leung_sheung.disciple_of!(yip_man, style: style)
-chu_shong_tin = Practitioner.create(name: "Chu Shong Tin", added_by: user, public_figure: true)
-chu_shong_tin.disciple_of!(yip_man, style: style)
-# lok_yiu = Practitioner.create(name: "Lok Yiu", added_by: user, public_figure: true)
-# lok_yiu.disciple_of!(yip_man, style: style)
-# jiu_wan = Practitioner.create(name: "Jiu Wan", added_by: user, public_figure: true)
-# jiu_wan.disciple_of!(yip_man, style: style)
-# wong_shun_leung = Practitioner.create(name: "Wong Shun Leung", added_by: user, public_figure: true)
-# wong_shun_leung.disciple_of!(yip_man, style: style)
-# ho_kam_ming = Practitioner.create(name: "Ho Kam Ming", added_by: user, public_figure: true)
-# ho_kam_ming.disciple_of!(yip_man, style: style)
-# leung_ting = Practitioner.create(name: "Leung Ting", added_by: user, public_figure: true)
-# leung_ting.disciple_of!(yip_man, style: style)
+user = User.find_or_create_by!(email: "user@example.com") do |u|
+  u.password = "aaaaaaaa"
+  u.admin = true
+end
+
+style = Style.find_or_create_by!(name: "Wing Chun")
+pole_style = Style.find_or_create_by!(name: "Six and a half point long pole")
+
+def find_or_seed!(user, name, **attrs)
+  Practitioner.find_or_create_by!(name: name) do |p|
+    p.added_by = user
+    p.public_figure = true
+    attrs.each { |k, v| p.send(:"#{k}=", v) }
+  end
+end
+
+def relate!(disciple, master, style:)
+  disciple.disciple_of!(master, style: style) unless disciple.disciple_of?(master)
+end
+
+ng_mui         = find_or_seed!(user, "Ng Mui", legendary: true, controversial: true, created_style: style)
+chi_sin        = find_or_seed!(user, "Chi Sin", legendary: true, controversial: true, created_style: pole_style)
+yim_wing_chun  = find_or_seed!(user, "Yim Wing Chun", controversial: true)
+leung_bok_cho  = find_or_seed!(user, "Leung Bok Cho")
+leung_lan_kwai = find_or_seed!(user, "Leung Lan Kwai")
+leung_yee_tai  = find_or_seed!(user, "Leung Yee Tai")
+wong_wah_po    = find_or_seed!(user, "Wong Wah Po")
+leung_jan      = find_or_seed!(user, "Leung Jan")
+chan_wah_shun   = find_or_seed!(user, "Chan Wah Shun")
+leung_bik      = find_or_seed!(user, "Leung Bik")
+yip_man        = find_or_seed!(user, "Yip Man")
+yip_chun       = find_or_seed!(user, "Yip Chun")
+yip_ching      = find_or_seed!(user, "Yip Ching")
+leung_sheung   = find_or_seed!(user, "Leung Sheung")
+chu_shong_tin  = find_or_seed!(user, "Chu Shong Tin")
+
+relate!(yim_wing_chun, ng_mui, style: style)
+relate!(leung_bok_cho, yim_wing_chun, style: style)
+relate!(leung_lan_kwai, leung_bok_cho, style: style)
+relate!(leung_yee_tai, chi_sin, style: pole_style)
+relate!(leung_yee_tai, wong_wah_po, style: style)
+relate!(wong_wah_po, leung_yee_tai, style: pole_style)
+relate!(wong_wah_po, leung_lan_kwai, style: style)
+relate!(leung_jan, leung_yee_tai, style: style)
+relate!(leung_jan, wong_wah_po, style: style)
+relate!(chan_wah_shun, leung_jan, style: style)
+relate!(leung_bik, leung_jan, style: style)
+relate!(leung_bik, wong_wah_po, style: style)
+relate!(yip_man, chan_wah_shun, style: style)
+relate!(yip_man, leung_bik, style: style)
+relate!(yip_chun, yip_man, style: style)
+relate!(yip_ching, yip_man, style: style)
+relate!(leung_sheung, yip_man, style: style)
+relate!(chu_shong_tin, yip_man, style: style)

@@ -27,7 +27,7 @@ class DisciplesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to practitioners_url, notice: "Disciple was successfully added." }
+      format.html { redirect_to practitioner_url(@practitioner), notice: "Disciple was successfully added." }
       format.json { head :no_content }
     end
   rescue ActiveRecord::RecordInvalid => e

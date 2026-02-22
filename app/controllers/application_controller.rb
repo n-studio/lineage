@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include Pagy::Backend
+  include Pagy::Method
   include DeviseBaseController
   ActiveSupport.run_load_hooks(:devise_failure_app, self)
 

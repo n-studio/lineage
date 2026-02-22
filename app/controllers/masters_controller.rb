@@ -14,7 +14,7 @@ class MastersController < ApplicationController
         if master_params[:name].to_i > 0
           Practitioner.find(master_params[:name])
         else
-          Practitioner.create!(name: master_params[:name], added_by: current_user)
+          Practitioner.create!(name: master_params[:name], public_figure: master_params[:public_figure], added_by: current_user)
         end
 
       @style =
@@ -27,7 +27,7 @@ class MastersController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to practitioners_url, notice: "Master was successfully added." }
+      format.html { redirect_to practitioner_url(@practitioner), notice: "Master was successfully added." }
       format.json { head :no_content }
     end
   rescue ActiveRecord::RecordInvalid => e
@@ -54,6 +54,6 @@ class MastersController < ApplicationController
 
   def master_params
     params.require(:practitioner)
-      .permit(:name, :style)
+      .permit(:name, :style, :public_figure)
   end
 end

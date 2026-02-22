@@ -80,7 +80,26 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: lineage_production
-  username: lineage
-  password: <%= ENV["LINEAGE_DATABASE_PASSWORD"] %>
+  primary:
+    <<: *default
+    database: lineage_production
+    username: lineage
+    password: <%= ENV["LINEAGE_DATABASE_PASSWORD"] %>
+  queue:
+    <<: *default
+    database: lineage_queue_production
+    username: lineage
+    password: <%= ENV["LINEAGE_DATABASE_PASSWORD"] %>
+    migrations_paths: db/queue_migrate
+  cache:
+    <<: *default
+    database: lineage_cache_production
+    username: lineage
+    password: <%= ENV["LINEAGE_DATABASE_PASSWORD"] %>
+    migrations_paths: db/cache_migrate
+  cable:
+    <<: *default
+    database: lineage_cable_production
+    username: lineage
+    password: <%= ENV["LINEAGE_DATABASE_PASSWORD"] %>
+    migrations_paths: db/cable_migrate

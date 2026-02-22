@@ -13,6 +13,11 @@
         <%= f.select :style, [nil] + @styles.map(&:name), {}, data: { select_style: true } %>
       </div>
 
+      <div>
+        <%= f.label :public_figure, style: "display: block" %>
+        <%= f.select :public_figure, [["Yes", true], ["No", false]] %>
+      </div>
+
       <%= f.submit "Add master" %>
     <% end %>
 

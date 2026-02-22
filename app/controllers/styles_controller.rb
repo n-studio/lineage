@@ -11,6 +11,6 @@ class StylesController < ApplicationController
       .order(name: :asc)
 
     @pagy, @styles = pagy(query)
-    @pagy_metadata = pagy_metadata(@pagy)
+    @pagy_metadata = @pagy.data_hash
   end
 end

@@ -17,7 +17,7 @@ class PractitionersController < ApplicationController
       .includes(:styles_learned, :styles_taught)
 
     @pagy, @practitioners = pagy(query)
-    @pagy_metadata = pagy_metadata(@pagy)
+    @pagy_metadata = @pagy.data_hash
   end
 
   # GET /practitioners/1 or /practitioners/1.json
@@ -45,7 +45,7 @@ class PractitionersController < ApplicationController
     created_style = Style.find_by(name: practitioner_params.delete(:created_style))
     @practitioner = Practitioner.new(practitioner_params.merge(created_style: created_style))
     @practitioner.added_by = current_user
-    @practitioner.user = current_user if params[:practitioner][:me] == "true" && current_user.practitioner.blank?
+    @practitioner.user = current_user if params[:practitioner][:me] == "1" && current_user.practitioner.blank?
 
     respond_to do |format|
       if @practitioner.save
@@ -72,7 +72,7 @@ class PractitionersController < ApplicationController
         Style.find_or_create_by(name: created_style_id_or_name)
       end
 
-    @practitioner.user = current_user if params[:practitioner][:me] == "true" && current_user.practitioner.blank?
+    @practitioner.user = current_user if params[:practitioner][:me] == "1" && current_user.practitioner.blank?
     @practitioner.assign_attributes(practitioner_params.merge(created_style: created_style))
 
     respond_to do |format|
