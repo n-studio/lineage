@@ -1,9 +1,9 @@
-# lineage (WIP)
+# Lineage
 
 Website to list all martial arts lineages all around the world.
 
 ## Run
 
-* `bundle install; yarn`
+* `bundle install`
 * `bin/dev`
 * open http://localhost:3000
