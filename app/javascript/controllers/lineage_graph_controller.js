@@ -72,13 +72,12 @@ export default class extends Controller {
             "border-width": 1,
             "border-color": "#cccccc",
             "shape": "roundrectangle",
-            "width": "label",
-            "height": "label",
-            "padding": "10px",
+            "width": 140,
+            "height": 36,
             "font-size": "11px",
             "font-family": "Arial, Verdana, Tahoma",
             "color": "#666666",
-            "text-wrap": "wrap",
+            "text-wrap": "ellipsis",
             "text-max-width": "120px"
           }
         },
@@ -95,20 +94,22 @@ export default class extends Controller {
           style: {
             "width": 1,
             "line-color": "#cccccc",
-            "target-arrow-color": "#cccccc",
-            "target-arrow-shape": "triangle",
+            "target-arrow-shape": "none",
             "curve-style": "taxi",
             "taxi-direction": "downward",
-            "arrow-scale": 0.8
+            "taxi-turn-min-distance": 20,
+            "source-endpoint": "0 50%",
+            "target-endpoint": "0 -50%"
           }
         }
       ],
       layout: {
         name: "dagre",
         rankDir: "TB",
-        nodeSep: 50,
-        rankSep: 70,
-        edgeSep: 10,
+        nodeSep: 60,
+        rankSep: 80,
+        edgeSep: 20,
+        ranker: "longest-path",
         animate: false,
         fit: false
       },
@@ -118,6 +119,7 @@ export default class extends Controller {
       autoungrabify: true
     })
 
+    this.snapToColumns()
     this.centerOnCurrent(this.canvasTarget)
 
     this.cy.on("tap", "node", (evt) => {
@@ -146,6 +148,14 @@ export default class extends Controller {
         "border-color": isCurrent ? "#94a0b4" : "#cccccc"
       })
       this.canvasTarget.style.cursor = "default"
+    })
+  }
+
+  snapToColumns() {
+    const columnWidth = 200
+    this.cy.nodes().forEach(node => {
+      const pos = node.position()
+      node.position("x", Math.round(pos.x / columnWidth) * columnWidth)
     })
   }
 
